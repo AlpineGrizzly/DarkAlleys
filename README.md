@@ -19,3 +19,11 @@ Their will be a mark for the price of a bitcoin that the player will be able to 
 Able to tap into electrical grid for power but will draw suspiciion from police
 
 Buy generators to power computers, must buy fuel, or can steal it but risk suspicion from the police
+
+### TODO 
+- [ ] Generating the map and buildings that the player and NPC's will use as bases
+- [ ] Coloring and environment elements in the world 
+- [ ] Simple Inventory ( 5 items ) 
+- [ ] Bitcoin minig logistics (Able to buy/steal a computer and set it up to mine bitcoin, can upgrade eventually)
+- [ ] Shopkeep (Alternative option to finding or stealing
+- [ ] Cop + enemy miner AI 

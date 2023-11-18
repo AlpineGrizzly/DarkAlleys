@@ -12,6 +12,7 @@
 #include <ncurses.h>
 
 #include "player.h"
+#include "map.h"
 
 int main() { 
     /* Init vars */
@@ -28,13 +29,16 @@ int main() {
     getmaxyx(stdscr, max_y, max_x);
     
     /* Create the main window */ 
-    WINDOW* playwin = newwin(20 ,50, 0, 0);
+    WINDOW* playwin = newwin(MAP_Y, MAP_X, 0, 0);
     box(playwin, '|', '=');   
+    Map* map = new Map(playwin);
+    map->draw_map();
     refresh();
     wrefresh(playwin);
 
     Player* p = new Player(playwin, 1, 1, '@');
     do { 
+        map->draw_map();
         p->display();
         wrefresh(playwin);
     } while(p->getmv() != 'x');
