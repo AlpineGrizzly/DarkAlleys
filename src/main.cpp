@@ -16,8 +16,8 @@
 
 int main() { 
     /* Init vars */
-    char mesg[] = "Here is some text!";
     int max_y, max_x;
+    srand (time(NULL)); // Initializes map seed
 
     /* Initialize ncurses */
     initscr();
@@ -32,7 +32,7 @@ int main() {
     WINDOW* playwin = newwin(MAP_Y, MAP_X, 0, 0);
     box(playwin, '|', '=');   
     Map* map = new Map(playwin);
-    map->draw_map();
+    map->gen_map();
     refresh();
     wrefresh(playwin);
 
