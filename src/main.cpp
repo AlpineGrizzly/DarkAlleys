@@ -32,7 +32,7 @@ int main() {
     getmaxyx(stdscr, max_y, max_x);
     
     /* Create the main window */ 
-    WINDOW* playwin = newwin(MAP_Y, MAP_X, 0, 0);
+    WINDOW* playwin = newwin(MAP_Y, MAP_X, 0, MAP_X / 2);
     box(playwin, '|', '=');   
     Map* map = new Map(playwin);
     map->gen_map();

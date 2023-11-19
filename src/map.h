@@ -3,7 +3,7 @@
 #define MAP_Y 40
 
 /* Characters for drawing map */
-#define B_WALL  L'░'
+#define B_WALL   "#"
 #define DOOR     'D'
 #define WATER    '~'
 #define MOUNTAIN '^'

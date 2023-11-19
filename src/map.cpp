@@ -18,8 +18,44 @@ void paveroads(char* map[][MAP_Y]) {
     // Need 2 implement 
 }
 
-void build_structs(char* map[][MAP_Y]) { 
-    // Need 2 implement
+void build_structs(char* map[][MAP_Y]) {
+    const int h_x = 5; 
+    const int h_y = 5; 
+    
+    char* simple_house[h_x][h_y] = {0};
+    int num_house = 3;
+
+    // Mason time
+    for (int i = 0; i < h_y; i++) { 
+        for (int j = 0; j < h_x; j++) { 
+            if (i == 0 || i == (h_y - 1) || j == 0 || j == (h_x - 1)) { 
+                simple_house[i][j] = (char*)B_WALL;
+            }
+        }
+    }
+
+    // Makes a single house
+    //for (int y = 0; y < 5; y++) { 
+    //    for (int x = 0; x < 5; x++) {
+    //         map[x][y] = simple_house[x][y];
+    //    }
+    //}    
+
+    // Place 3 random builds on the map 
+    for (int i = 0; i < num_house; i++) { 
+        int house_x = 1 + (rand() % (MAP_X - 6));
+        int house_y = 1 + (rand() % (MAP_Y - 6));
+        int house_door = 1 + (rand() % 3);
+
+        // Draw the house on the map 
+        for (int y = 0; y < h_y; y++) { 
+            for(int x = 0; x < h_x; x++) {
+                if (y == house_door) // Makes a front and backdoor (WONKY looking) 
+                    continue;
+                map[house_x + x][house_y + y] = simple_house[x][y];
+            }
+        }
+    }
 }
 
 
