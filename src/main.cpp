@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <ncurses.h>
+#include <locale.h>
 
 #include "player.h"
 #include "map.h"
@@ -18,12 +19,14 @@ int main() {
     /* Init vars */
     int max_y, max_x;
     srand (time(NULL)); // Initializes map seed
+    setlocale(LC_ALL, "");
 
     /* Initialize ncurses */
     initscr();
     cbreak();
     noecho();
     curs_set(0); // Hide the cursor
+    start_color();
 
     /* Get screen size */ 
     getmaxyx(stdscr, max_y, max_x);
@@ -41,6 +44,7 @@ int main() {
         map->draw_map();
         p->display();
         wrefresh(playwin);
+        refresh();
     } while(p->getmv() != 'x');
 
     endwin();

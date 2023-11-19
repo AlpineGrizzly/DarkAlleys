@@ -7,6 +7,9 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
+/* Macro color for player */
+#define C_PERSON 2
+
 class Player { 
     public:
         Player(WINDOW *win, int y, int x, char c);
@@ -31,6 +34,7 @@ Player::Player(WINDOW * win, int y, int x, char c) {
     getmaxyx(curwin, yMax, xMax);
     keypad(curwin, true);
     character = c;
+    init_pair(C_PERSON, COLOR_RED, COLOR_BLACK);
 }
 
 void Player::mvup() { 
@@ -83,6 +87,7 @@ int Player::getmv() {
 }
 
 void Player::display() { 
+    wattron(this->curwin, COLOR_PAIR(C_PERSON));
     mvwaddch(curwin, yLoc, xLoc, character);
 }
 
