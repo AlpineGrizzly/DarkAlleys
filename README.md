@@ -20,7 +20,8 @@ Able to tap into electrical grid for power but will draw suspiciion from police
 
 Buy generators to power computers, must buy fuel, or can steal it but risk suspicion from the police
 
-### TODO 
+### TODO
+- [ ] Create logging for debugging so i dont have to dive into gdb 
 - [ ] Generating the map and buildings that the player and NPC's will use as bases
 - [ ] Coloring and environment elements in the world 
 - [ ] Simple Inventory ( 5 items ) 

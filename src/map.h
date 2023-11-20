@@ -2,9 +2,7 @@
 #define MAP_X 100
 #define MAP_Y 40
 
-/* Characters for drawing map */
-#define B_WALL   "#"
-#define DOOR     'D'
+/* Nature definitions */
 #define WATER    '~'
 #define MOUNTAIN '^'
 #define GRASS_1  "," 
@@ -12,8 +10,16 @@
 #define GRASS_3  "`" 
 #define GRASS_4  " "
 
+/* Structure definitions */
+#define MAX_SSIZE 10
+#define MIN_SSIZE  4
+#define B_WALL    "#"
+#define DOOR      "+"
+#define ROOF      "0"
+
 /** Macros for map colors */
-#define C_NATURE 1
+#define C_NATURE     1
+#define C_INDUSTRIAL 2
 
 // Use to find character currently at at_topleft = mvinch(0, 0);
 class Map { 

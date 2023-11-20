@@ -1,12 +1,21 @@
 #include <cmath>
 #include <ncurses.h>
+#include <iostream>
 
 #include "map.h"
+#include "structures.h"
 
 const char* g_grass_text[] = {GRASS_1, GRASS_2, GRASS_3, GRASS_4};  
 
+
+/** pos struct for defining positions on the map */
+typedef struct { 
+    int x;
+    int y;  
+} pos_t;
+
 /** Helper functions */
-void laygrass(char* map[][MAP_Y]) {
+static void laygrass(char* map[][MAP_Y]) {
     for (int y = 1; y < MAP_Y - 1; y++) { 
         for (int x = 1; x < MAP_X - 1; x++) {
              map[x-1][y-1] = (char*)g_grass_text[rand() % 4];
@@ -14,45 +23,58 @@ void laygrass(char* map[][MAP_Y]) {
     }
 }
 
-void paveroads(char* map[][MAP_Y]) { 
+static void paveroads(char* map[][MAP_Y]) { 
     // Need 2 implement 
 }
 
-void build_structs(char* map[][MAP_Y]) {
-    const int h_x = 5; 
-    const int h_y = 5; 
-    
-    char* simple_house[h_x][h_y] = {0};
-    int num_house = 3;
+// Returns true if a building is tool close to current building
+static bool claustaphobia() { 
+ // Need 2 implement
+    return false;
+}
 
-    // Mason time
-    for (int i = 0; i < h_y; i++) { 
-        for (int j = 0; j < h_x; j++) { 
-            if (i == 0 || i == (h_y - 1) || j == 0 || j == (h_x - 1)) { 
-                simple_house[i][j] = (char*)B_WALL;
-            }
+static void gen_struct(int dimx, int dimy, char* foundation[][MAX_SSIZE]) { 
+    // Generate our doors
+    int door = 1 + (rand() % (dimy - 2)); // Makes a front and backdoor (WONKY looking) 
+
+    // Generate the building in the foundation buffer  
+    for (int y = 0; y < dimy; y++) { 
+        for (int x = 0; x < dimx; x++) {  
+            if (y == door && (x == 0 || x == dimx-1))
+                foundation[x][y] = (char*)DOOR;
+            else if (y == 0 || y == (dimy - 1) || x == 0 || x == (dimx - 1))
+                foundation[x][y] = (char*)B_WALL;
+            else
+                foundation[x][y] = (char*)ROOF;
         }
     }
+}
 
-    // Makes a single house
-    //for (int y = 0; y < 5; y++) { 
-    //    for (int x = 0; x < 5; x++) {
-    //         map[x][y] = simple_house[x][y];
-    //    }
-    //}    
+static void build_structs(char* map[][MAP_Y]) {
+    char* foundation[MAX_SSIZE][MAX_SSIZE] = {0}; // Used to generate our array 
+    int num_house = 3; // Number of buildings to generate
 
-    // Place 3 random builds on the map 
-    for (int i = 0; i < num_house; i++) { 
-        int house_x = 1 + (rand() % (MAP_X - 6));
-        int house_y = 1 + (rand() % (MAP_Y - 6));
-        int house_door = 1 + (rand() % 3);
+    /** Contains positions for each house generated */
+    pos_t house[num_house];
 
+    // Generate the buildings on the map
+    for (int i = 0; i < num_house; i++) {
+        // Generate the building size
+        int dimx = 5; //MIN_SSIZE + (rand() % MAX_SSIZE);
+        int dimy = 5; //MIN_SSIZE + (rand() % MAX_SSIZE);
+        gen_struct(dimx, dimy, foundation);
+
+        // Generate the location on the map of the building
+        // Check 1: Make sure we aren't overlapping another building 
+        house[i].x = 1 + (rand() % (MAP_X - dimx));
+        house[i].y = 1 + (rand() % (MAP_Y - dimy));
+        
+        //map[house[i].x][house[i].y] = (char*)"$"; 
+        //continue; 
         // Draw the house on the map 
-        for (int y = 0; y < h_y; y++) { 
-            for(int x = 0; x < h_x; x++) {
-                if (y == house_door) // Makes a front and backdoor (WONKY looking) 
-                    continue;
-                map[house_x + x][house_y + y] = simple_house[x][y];
+        for (int y = 0; y < dimy; y++) { 
+            for(int x = 0; x < dimx; x++) {
+                map[house[i].x + x][house[i].y + y] = foundation[x][y];
             }
         }
     }
