@@ -17,6 +17,11 @@
 #define DOOR      "+"
 #define ROOF      "0"
 
+/* City definitions */
+#define ROAD_OUTER "="
+#define ROAD_INNER "-"
+#define ALLEY      "*"
+
 /** Macros for map colors */
 #define C_NATURE     1
 #define C_INDUSTRIAL 2
