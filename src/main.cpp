@@ -32,21 +32,30 @@ int main() {
     getmaxyx(stdscr, max_y, max_x);
     
     /* Create the main window */ 
-    WINDOW* playwin = newwin(MAP_Y, MAP_X, 0, MAP_X / 2);
+    WINDOW* playwin = newwin(MAP_Y, MAP_X, 0, 0);
+    WINDOW* statswin = newwin(10, MAP_X , MAP_Y, 0);
+
+    // Box the windows 
     box(playwin, '|', '=');   
+    box(statswin, '*', '*');   
+
     Map* map = new Map(playwin);
     map->gen_map();
     refresh();
     wrefresh(playwin);
+    wrefresh(statswin);
 
     Player* p = new Player(playwin, 1, 1, '@');
     do { 
         map->draw_map();
         p->display();
         wrefresh(playwin);
+        wrefresh(statswin);
         refresh();
     } while(p->getmv() != 'x');
 
     endwin();
+    delwin(playwin);
+    delwin(statswin);
 	return 0;
 }
