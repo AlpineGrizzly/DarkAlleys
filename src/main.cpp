@@ -48,6 +48,5 @@ int main() {
     } while(p->getmv() != 'x');
 
     endwin();
-
 	return 0;
 }

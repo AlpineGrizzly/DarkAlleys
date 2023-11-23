@@ -46,6 +46,7 @@ static int get_dim() {
     return rand() % (MAX_SSIZE - MIN_SSIZE + 1) + MIN_SSIZE;
 }
 
+// gen_struct Generate a structure on a foudnation with x and y dimensions specified
 static void gen_struct(int dimx, int dimy, char* foundation[][MAX_SSIZE]) { 
     // Generate the doors
     int door = 1 + (rand() % (dimy - 2)); // Makes a front and backdoor (WONKY looking) 
@@ -58,30 +59,42 @@ static void gen_struct(int dimx, int dimy, char* foundation[][MAX_SSIZE]) {
             else if (y == 0 || y == (dimy - 1) || x == 0 || x == (dimx - 1))
                 foundation[x][y] = (char*)B_WALL;
             else
-                foundation[x][y] = (char*)ROOF;
+                foundation[x][y] = (char*)" "; //(char*)ROOF;
         }
     }
 }
 
-// Generates a random house structure
+// gen_house Generates a random house structure
 static bool gen_house(house_t *dahood, int idx) {
     house_t tmp;
+    house_t* iter = &dahood[0]; // Iterating through the dahood
+    bool free_realstate = false;
+    int counter = 10; // Maxiumum retries before we exit
 
     // Get dimensions
     tmp.dimx = get_dim();
     tmp.dimy = get_dim();
 
-    // Get position on map that doesn't conflict with other houses
-    tmp.x = 1 + (rand() % (MAP_X - tmp.dimx));
-    tmp.y = 1 + (rand() % (MAP_Y - tmp.dimy));
+    // Get position on map
+    // Case 1: Building position should not over lap with another building
+    while(!free_realstate && counter > 0) {     
+        if (idx == 0)
+            tmp.x = 2; //1 + (rand() % (MAP_X - tmp.dimx));
+        else
+            tmp.x = (int)(dahood[idx - 1].x + MAX_SSIZE + 4);
+        tmp.y = 1 + (rand() % (MAP_Y - tmp.dimy - 2));
 
+        // Check if randomly generated values overlap with other houses
+        //free_realstate = is_free(dahood, tmp);
+        counter--;                        
+    }
     dahood[idx] = tmp;
     return true;
 }
 
 static void build_structs(char* map[][MAP_Y]) {
     char* foundation[MAX_SSIZE][MAX_SSIZE] = {0}; // Used to generate our array 
-    int num_house = 5; // Number of buildings to generate
+    int num_house = 7; // Number of buildings to generate
 
     /** Contains positions for each structure generated */
     house_t house[num_house];
@@ -117,7 +130,7 @@ Map::Map(WINDOW *win) {
 // Generates the map 
 void Map::gen_map() {
     laygrass(this->map);      // Layer 1 grass + trees   
-    paveroads(this->map);     // Layer 2 walkways and roads
+    //paveroads(this->map);     // Layer 2 walkways and roads
     build_structs(this->map); // Layer 3 Buildings
     
 }
