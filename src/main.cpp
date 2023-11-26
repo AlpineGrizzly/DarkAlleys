@@ -33,7 +33,7 @@ int main() {
     
     /* Create the main window */ 
     WINDOW* playwin = newwin(MAP_Y, MAP_X, 0, 0);
-    WINDOW* statswin = newwin(10, MAP_X , MAP_Y, 0);
+    WINDOW* statswin = newwin(MAP_Y, 40 , 0, MAP_X);
 
     // Box the windows 
     box(playwin, '|', '=');   
@@ -45,7 +45,7 @@ int main() {
     wrefresh(playwin);
     wrefresh(statswin);
 
-    Player* p = new Player(playwin, 1, 1, '@');
+    Player* p = new Player(playwin, 2, 2, '@');
     do { 
         map->draw_map();
         p->display();

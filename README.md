@@ -20,9 +20,14 @@ Able to tap into electrical grid for power but will draw suspiciion from police
 
 Buy generators to power computers, must buy fuel, or can steal it but risk suspicion from the police
 
+### BUGS
+- [ ] Door generation sometimes doesn't generate a door
+
 ### TODO
+- [ ] Smart building generation would be cool, L shaped buildings and what not besides just rectangles
+- [ ] Better door generation
 - [ ] Create logging for debugging so i dont have to dive into gdb 
-- [ ] Generating the map and buildings that the player and NPC's will use as bases
+- [X] Generating the map and buildings that the player and NPC's will use as bases
 - [ ] Coloring and environment elements in the world 
 - [ ] Simple Inventory ( 5 items ) 
 - [ ] Bitcoin minig logistics (Able to buy/steal a computer and set it up to mine bitcoin, can upgrade eventually)

@@ -8,12 +8,16 @@
 
 /* Structure definitions */
 #define MAX_SSIZE 12 // Max size of structure dimensions
-#define MIN_SSIZE  8 // Min size " "
-#define B_WALL    "#"
-#define DOOR      "+"
-#define ROOF      "0"
+#define MIN_SSIZE  3 // Min size " "
+#define B_WALL      "#"
+#define DOOR        "+"
+#define LOCKED_DOOR "X"
+#define ROOF        "0"
 
 /* City definitions */
-#define ROAD_OUTER "="
-#define ROAD_INNER "-"
-#define ALLEY      "*"
+//#define ROAD_OUTER "="
+//#define ROAD_INNER "-"
+#define ROAD        "="
+
+/* Bitconin miners */
+#define MINER      "B"
