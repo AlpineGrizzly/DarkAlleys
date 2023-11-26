@@ -3,11 +3,19 @@
 #include <iostream>
 
 #include "map.h"
+#include "items.h"
 
 const char* g_grass_text[] = {GRASS_1, GRASS_2, GRASS_3, GRASS_4};  
 const int g_ngrass_tile = sizeof(g_grass_text) / sizeof(g_grass_text[0]);
 
 /** Helper functions */
+/**
+ * laygrass
+ * 
+ * Plants trees and lays grass in the world
+ * 
+ * @param map The map we are generating
+*/
 static void laygrass(char* map[][MAP_Y]) {
     for (int y = 1; y < MAP_Y - 1; y++) { 
         for (int x = 1; x < MAP_X - 1; x++) {
@@ -16,6 +24,13 @@ static void laygrass(char* map[][MAP_Y]) {
     }
 }
 
+/**
+ * paveroads
+ * 
+ * Will procedural generate roads for the map
+ * 
+ * @param map The map we are generating on 
+*/
 static void paveroads(char* map[][MAP_Y]) { 
     int hroad = 0;
     int vroad = 0;
@@ -48,11 +63,24 @@ static void paveroads(char* map[][MAP_Y]) {
     }
 }
 
-// gendim Generate a random dimension for a structure between min and max structure size
+/** 
+ * get_dim 
+ * Generate a random dimension for a structure 
+ * between min and max structure size
+ */ 
 static int get_dim() { 
     return rand() % (MAX_SSIZE - MIN_SSIZE + 1) + MIN_SSIZE;
 }
 
+/**
+ * is_grass
+ * 
+ * Boolean function to check whether a given block is a grass block
+ * 
+ * @param block Block we are checking
+ * 
+ * @return true if the block is a grass block, false otherwise
+*/
 static bool is_grass(char* block) { 
     for (int i = 0; i < g_ngrass_tile; i++) { 
         if (block == g_grass_text[i])
@@ -61,7 +89,17 @@ static bool is_grass(char* block) {
     return false;
 }
 
-// get_lotdim Get the dimensions on the space in lot provided
+/** 
+ * get_lotdim 
+ * 
+ * Get the dimensions on the space in lot provided
+ *
+ * @param x Beginning x position of the space
+ * @param y Beginning y position of the space
+ * @param map the map
+ * 
+ * @return dim_t object containing the x and y dimensions of the space on the map
+ */ 
 static dim_t get_lotdim(int x, int y, char* map[][MAP_Y]) { 
     dim_t tmp = {0};
 
@@ -82,24 +120,32 @@ static dim_t get_lotdim(int x, int y, char* map[][MAP_Y]) {
 
 }
 
-// ropeadope Build the structure
+/**
+ * ropeadope
+ * 
+ * Generate the building on the map with the sp
+        char* get_character();ecified dimensions
+ * 
+ * @param startx Starting x position of the space 
+ * @param starty Starting y position of the space 
+ * @param dims dim_t object containing dimensions of the building to be constructed
+ * @param map the map
+*/
 static void ropeadope(int startx, int starty, dim_t dims, char* map[][MAP_Y]) { 
     int finalx = startx + dims.x;
     int finaly = starty + dims.y; 
-
-    // Generate door position
-    int door_pos = starty+1 + (rand() % (finaly));    
+    int door_pos = starty+1;
 
     // Generate the building    
     for (int y = starty; y < finaly; y++) { 
+        char* get_character();
         for(int x = startx; x < finalx; x++) { 
             if (y == door_pos && (x == startx || x == finalx-1))
                 map[x][y] = (char*)DOOR;
-            else 
-            if (x == startx || y == starty || x == finalx-1 || y == finaly-1)
+            else if (x == startx || y == starty || x == finalx-1 || y == finaly-1)
                 map[x][y] = (char*)B_WALL;
             else
-                map[x][y] = (char*)" "; //(char*)ROOF;
+                map[x][y] = (char*)B_INTERIOR; //(char*)ROOF;
         }
     }
 }
@@ -131,6 +177,13 @@ static bool is_corner(int posx, int posy, char* map[][MAP_Y]) {
     return false;
 }
 
+/**
+ * build_structs
+ * 
+ * Handles generating all the structures on the map
+ * 
+ * @param map Map to generate structures on
+*/
 static void build_structs(char* map[][MAP_Y]) {
     dim_t bdim; // To hold dimensions of our building
     
@@ -139,16 +192,39 @@ static void build_structs(char* map[][MAP_Y]) {
         for (int x = 0; x < MAP_X - 2; x++) { 
             // Check if its a grass and a corner piece 
             if (!is_grass(map[x][y]) || !is_corner(x,y, map)) continue;
-        
+
             // Get the dimensions of the space
             bdim = get_lotdim(x, y, map);
-           
+
             //Check against min 
             if (bdim.x < MIN_SSIZE || bdim.y < MIN_SSIZE)
                 continue;
 
+            // Odds of generating 1/3 [0,1,2]
+            if (rand() % 2)
+                continue;
+
             // Put a building in the lot 
             ropeadope(x, y, bdim, map);   
+        }
+    }
+}
+
+/** 
+ * layitems
+ * 
+ * Will generate items randomly throughout the world
+*/
+static void layitems(char* map[][MAP_Y]) { 
+    //Miner* miners[MAX_MINERS];
+    Miner* test_miner = new Miner((char*)MINER, (char*)"test_miner", MINER_CHANCE);
+
+    // randomly generate inside buildings
+    for (int y = 0; y < MAP_Y-2; y++) { 
+        for (int x = 0; x < MAP_X-2; x++) { 
+            if ((map[x][y] == (char*)B_INTERIOR) && !(rand() % test_miner->get_rarity())) { 
+                map[x][y] = test_miner->get_char();
+            }
         }
     }
 }
@@ -166,7 +242,8 @@ Map::Map(WINDOW *win) {
 void Map::gen_map() {
     laygrass(this->map);      // Layer 1 grass + trees   
     paveroads(this->map);     // Layer 2 walkways and roads
-    build_structs(this->map); // Layer 3 Buildings
+    build_structs(this->map); // Layer 3 Building
+    layitems(this->map);      // Layer 4 Generate items
     
 }
 

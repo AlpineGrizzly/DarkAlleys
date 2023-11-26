@@ -8,14 +8,6 @@
 #define C_NATURE     1
 #define C_INDUSTRIAL 2
 
-/** pos struct for defining positions on the map */
-typedef struct { 
-    int x;
-    int y;
-    int dimx;
-    int dimy;  
-} house_t;
-
 typedef struct {
     int x;
     int y;
