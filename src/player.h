@@ -9,7 +9,7 @@
 #include "structures.h"
 
 /* Macro color for player */
-#define C_PERSON 2
+#define C_PERSON 3
 
 class Player { 
     public:

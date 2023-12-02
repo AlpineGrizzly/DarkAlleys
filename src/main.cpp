@@ -20,6 +20,9 @@ int main() {
     int max_y, max_x;
     srand (time(NULL)); // Initializes map seed
     setlocale(LC_ALL, "");
+    int p_startx = 2;
+    int p_starty = 2;
+    char p_char = '@'; // Choose your character? 
 
     /* Initialize ncurses */
     initscr();
@@ -39,13 +42,17 @@ int main() {
     box(playwin, '|', '=');   
     box(statswin, '*', '*');   
 
+    /* Generate the map and game windows */
     Map* map = new Map(playwin);
     map->gen_map();
     refresh();
     wrefresh(playwin);
-    wrefresh(statswin);
+    wrefresh(statswin); // Statistics menu that will contain inventory and health for player
+    
+    /* Instantiate the player */
+    Player* p = new Player(playwin, p_starty, p_startx, p_char);
 
-    Player* p = new Player(playwin, 2, 2, '@');
+    /* Main game loop */
     do { 
         map->draw_map();
         p->display();

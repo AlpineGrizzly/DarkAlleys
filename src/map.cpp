@@ -217,7 +217,7 @@ static void build_structs(char* map[][MAP_Y]) {
 */
 static void layitems(char* map[][MAP_Y]) { 
     //Miner* miners[MAX_MINERS];
-    Miner* test_miner = new Miner((char*)MINER, (char*)"test_miner", MINER_CHANCE);
+    Miner* test_miner = new Miner((char*)MINER, (char*)"Basic Miner", MINER_CHANCE, rand() % 3);
 
     // randomly generate inside buildings
     for (int y = 0; y < MAP_Y-2; y++) { 
@@ -236,10 +236,20 @@ Map::Map(WINDOW *win) {
     /** Init color pairs */
     init_pair(C_NATURE, COLOR_GREEN, COLOR_BLACK); 
     init_pair(C_INDUSTRIAL, COLOR_BLUE, COLOR_BLACK);
+    init_pair(C_MINER, COLOR_WHITE, COLOR_BLACK);
+}
+
+static int get_color(char* block) { 
+    if (is_grass(block))
+        return C_NATURE;    
+    else if (block == MINER)
+        return C_MINER;
+    else
+        return C_INDUSTRIAL;
 }
 
 // Generates the map 
-void Map::gen_map() {
+void Map::gen_map() { 
     laygrass(this->map);      // Layer 1 grass + trees   
     paveroads(this->map);     // Layer 2 walkways and roads
     build_structs(this->map); // Layer 3 Building
@@ -247,11 +257,12 @@ void Map::gen_map() {
     
 }
 
-void Map::draw_map() {
+void Map::draw_map() { 
     wattron(this->curwin, COLOR_PAIR(C_NATURE));
     for (int y = 1; y < MAP_Y - 1; y++) { 
-        for (int x = 1; x < MAP_X - 1; x++) {
-             mvwaddstr(curwin, y, x, this->map[x-1][y-1]);
+        for (int x = 1; x < MAP_X - 1; x++) { 
+            wattron(this->curwin, COLOR_PAIR(get_color(this->map[x-1][y-1])));
+            mvwaddstr(curwin, y, x, this->map[x-1][y-1]);
         }
     }
 }

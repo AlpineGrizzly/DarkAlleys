@@ -7,8 +7,8 @@
 #define GRASS_4  " "
 
 /* Structure definitions */
-#define MAX_SSIZE 12 // Max size of structure dimensions
-#define MIN_SSIZE  3 // Min size " "
+#define MAX_SSIZE   12 // Max size of structure dimensions
+#define MIN_SSIZE    4 // Min size " "
 #define B_WALL      "#"
 #define B_INTERIOR  ":"
 #define DOOR        "+"

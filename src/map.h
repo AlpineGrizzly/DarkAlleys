@@ -7,6 +7,7 @@
 /** Macros for map colors */
 #define C_NATURE     1
 #define C_INDUSTRIAL 2
+#define C_MINER      4 
 
 typedef struct {
     int x;
