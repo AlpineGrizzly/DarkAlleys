@@ -214,6 +214,8 @@ static void build_structs(char* map[][MAP_Y]) {
  * layitems
  * 
  * Will generate items randomly throughout the world
+ * 
+ * @param map Map to lay items in 
 */
 static void layitems(char* map[][MAP_Y]) { 
     //Miner* miners[MAX_MINERS];
@@ -222,8 +224,11 @@ static void layitems(char* map[][MAP_Y]) {
     // randomly generate inside buildings
     for (int y = 0; y < MAP_Y-2; y++) { 
         for (int x = 0; x < MAP_X-2; x++) { 
-            if ((map[x][y] == (char*)B_INTERIOR) && !(rand() % test_miner->get_rarity())) { 
-                map[x][y] = test_miner->get_char();
+            if (map[x][y] == (char*)B_INTERIOR) {  
+                if (!(rand() % test_miner->get_rarity())) 
+                    map[x][y] = test_miner->get_char(); // Spawn miners 
+                else if(!(rand() % COMPUTER_CHANCE)) 
+                    map[x][y] = (char*)COMPUTER;        // Spawn Computer 
             }
         }
     }
@@ -236,19 +241,40 @@ Map::Map(WINDOW *win) {
     /** Init color pairs */
     init_pair(C_NATURE, COLOR_GREEN, COLOR_BLACK); 
     init_pair(C_INDUSTRIAL, COLOR_BLUE, COLOR_BLACK);
+    init_pair(C_ROADS, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(C_MINER, COLOR_WHITE, COLOR_BLACK);
+    init_pair(C_ROADS, COLOR_WHITE, COLOR_BLACK);
+    init_pair(C_DOOR, COLOR_MAGENTA, COLOR_GREEN);
 }
 
+
+/**
+ * get_color
+ * 
+ * Given a block on the map, return the associated color 
+ * 
+ * @param block Block we are determining color
+ * 
+ * @return the associated color value 
+*/
 static int get_color(char* block) { 
     if (is_grass(block))
         return C_NATURE;    
-    else if (block == MINER)
+    else if (block == MINER || block == COMPUTER)
         return C_MINER;
-    else
-        return C_INDUSTRIAL;
+    else if (block == ROAD)
+        return C_ROADS;
+    else if (block == DOOR)
+        return C_DOOR;
+    
+    return C_INDUSTRIAL;
 }
 
-// Generates the map 
+/** 
+ * gen_map
+ * 
+ * Generates the map
+*/
 void Map::gen_map() { 
     laygrass(this->map);      // Layer 1 grass + trees   
     paveroads(this->map);     // Layer 2 walkways and roads
@@ -257,6 +283,11 @@ void Map::gen_map() {
     
 }
 
+/** 
+ * draw_map
+ * 
+ * Draws the game map 
+*/
 void Map::draw_map() { 
     wattron(this->curwin, COLOR_PAIR(C_NATURE));
     for (int y = 1; y < MAP_Y - 1; y++) { 

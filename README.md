@@ -23,13 +23,13 @@ Buy generators to power computers, must buy fuel, or can steal it but risk suspi
 ### BUGS
 
 ### TODO
+- [ ] Figure out how to allow use of extended ascii characters
 - [ ] Ensuring after map is generated, player is spawned in a building ina  random location?
 - [ ] Using statitistics window, allow for monitoring of bitcoin miners and interacting buy coolant and whatnot
 - [ ] Allow for selling of bitcoin with randomized day prices 
 - [ ] Smart building generation would be cool, L shaped buildings and what not besides just rectangles
 - [ ] Better door generation (Hardcoded to min+1 tile on y side for now)
 - [ ] Create logging for debugging so i dont have to dive into gdb 
-- [X] Coloring and environment elements in the world 
 - [ ] Simple Inventory ( 5 items ) 
 - [ ] Bitcoin minig logistics (Able to buy/steal a computer and set it up to mine bitcoin, can upgrade eventually)
 - [ ] Shopkeep (Alternative option to finding or stealing

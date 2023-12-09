@@ -8,6 +8,8 @@
 #define C_NATURE     1
 #define C_INDUSTRIAL 2
 #define C_MINER      4 
+#define C_ROADS      5
+#define C_DOOR       6 
 
 typedef struct {
     int x;

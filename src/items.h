@@ -5,6 +5,12 @@
 #define MINER      "B"
 #define MINER_CHANCE 15 // 1/15 chance of spawning
 
+/* Other items */
+#define COMPUTER_CHANCE 20
+
+/* Computer for selling bitcoin */
+#define COMPUTER "C"
+
 class Miner { 
     public: 
         Miner(char* c, char* name, int rarity, int rate);
